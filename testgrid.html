@@ -1,0 +1,107 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        
+    </style>
+    </head>
+<body>
+    <body>
+    <canvas id="myCanvas" width="1000" height="1000"></canvas>
+</body>
+    <script type="text/javascript">
+        function getSquare(canvas, evt) {
+    var rect = canvas.getBoundingClientRect();
+    return {
+        x: 1 + (evt.clientX - rect.left) - (evt.clientX - rect.left)%200,
+        y: 1 + (evt.clientY - rect.top) - (evt.clientY - rect.top)%200
+    };
+}
+
+var locations = [
+    [1, -1, -1, -1, -1],
+    [-1, 1, -1, -1, -1],
+    [-1, -1, 1, -1, -1],
+    [-1, -1, -1, 1, -1],
+    [-1, -1, -1, -1, 1]
+];
+
+var blocksPlaced = 0;
+var maxBlocks = 6;
+
+function drawGrid(context) {
+    for (var x = 0.5; x < 1441; x += 200) {
+      context.moveTo(x, 0);
+      context.lineTo(x, 10000);
+    }
+    
+    for (var y = 0.5; y < 1441; y += 200) {
+      context.moveTo(0, y);
+      context.lineTo(10000, y);
+    }
+    
+    context.strokeStyle = "#ddd";
+    context.stroke();
+}
+
+function fillSquare(context, x, y){
+    var xfloor = Math.floor(x / 200);
+    var yfloor = Math.floor(y / 200);
+    if (blocksPlaced > 5) {
+        if (locations[xfloor][yfloor] === 0) {
+            context.fillStyle = "#990000";
+            
+        } else {
+            context.fillStyle = "#A0A0A0";
+        }
+        context.fillRect(x,y,199,199);
+        return;
+    } else {
+        context.fillStyle = "#66CC00";
+        blocksPlaced++;
+        context.fillRect(x,y,199,199);
+        locations[xfloor][yfloor] = 0;
+        return;
+    }
+    /**if (locations[xfloor][yfloor] === -1) {
+        context.fillStyle = "red";
+    } else if (locations[xfloor][yfloor] === 1) {
+        context.fillStyle = "green";
+    } else {
+        context.fillStyle = "gray";
+    }
+    
+    context.fillRect(x,y,199,199);**/
+}
+
+function initialFill(context) {
+    context.fillStyle = "#0066CC";
+    var j;
+    var k;
+    for (j = 0; j < 5; j++) {
+        for (k = 0; k < 5; k++) {
+            context.fillRect(200*j + 1, 200*k + 1, 199, 199);
+        }
+    }
+
+    context.fillRect(0, 0, 200, 200);
+}
+
+var canvas = document.getElementById('myCanvas');
+var context = canvas.getContext('2d');
+
+
+drawGrid(context);
+
+initialFill(context);
+
+canvas.addEventListener('click', function(evt) {
+    var mousePos = getSquare(canvas, evt);
+    fillSquare(context, mousePos.x, mousePos.y)
+    //document.write(x);
+    //document.write(y);
+}, false);
+    </script>
+</body>
+</html>
