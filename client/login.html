@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset=utf-8 />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login • Battleship</title>
+  <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">  
+</head>
+<body>
+  <h1>Battleship</h1>
+  <div id="wrapper">
+    <div id="signin">
+      <form id="signin-form">
+        <h2 id="login-title">Login</h2>
+        <hr class="bar" />
+        <div>
+          <input id="get_email" type="text" class="text-input" placeholder="Email"/>
+        </div>
+        <div>
+          <input id="get_pass" type="password" class="text-input" placeholder="Password" />
+        </div>
+        <button id="signin-button" type="submit" class="primary-btn">Sign In</button>
+      </form>
+      <div class="links">
+      <a href="#" id="forgot-password">Forgot Password</a>
+      </div>
+      <div class="or">
+        <hr class="bar" />
+        <span>OR</span>
+        <hr class="bar" />
+      </div>
+      <a href="#" id="signup-button" class="secondary-btn">Create an account</a>
+    </div>
+  </div>
+  
+<script src="https://www.gstatic.com/firebasejs/5.10.0/firebase.js"></script>
+<script src="login.js"></script>
+</body>
+</html>

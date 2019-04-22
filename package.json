@@ -1,0 +1,24 @@
+{
+  "name": "battleship",
+  "version": "1.0.0",
+  "description": "A web app of the classic battleship game. Strategically guess opponent's ship placements and destroy them all. Compete with upto 3 other players.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dhairyaa/battleship.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dhairyaa/battleship/issues"
+  },
+  "dependencies": {
+    "express": "^4.16.4",
+    "firebase": "^5.10.0",
+    "socket.io": "^2.2.0"
+  }
+}
