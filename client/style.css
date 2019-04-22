@@ -31,7 +31,8 @@ h6 {
 }
 
 /* Sign In */
-#signin {
+#signin,
+#signup {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -40,24 +41,19 @@ h6 {
   padding-bottom: 3rem;
 }
 
-#signin form {
+#signin form,
+#signup form {
   width: 60%;
   padding-bottom: 3rem;
 }
 
-#signin .logo {
-  margin-bottom: 8vh;
-}
-
-#signin .logo img {
-  width: 300px;
-}
-
-#signin .bar {
+#signin .bar,
+#signup .bar {
   margin-bottom: 1.4em;
 }
 
-#signin .text-input {
+#signin .text-input,
+#signup .text-input {
   margin-bottom: 1.3rem;
   width: 92.5%;
   border-radius: 2px;
@@ -69,18 +65,22 @@ h6 {
   line-height: 1.4rem;
 }
 
-#signin .primary-btn {
+#signin .primary-btn,
+#signup .primary-btn {
   width: 100%;
 }
 
 #signin .secondary-btn,
 .or,
+.links,
+#signup .secondary-btn,
 .links {
   height: 20%;
   width: 50%;
 }
 
-#signin .links a {
+#signin .links a,
+#signup .link a {
   display: block;
   color: #fff;
   text-decoration: none;
@@ -96,7 +96,8 @@ h6 {
   align-items: center;
 }
 
-#signin .or .bar {
+#signin .or .bar,
+#signup .bar {
   flex: auto;
   border: none;
   height: 1px;
