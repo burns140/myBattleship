@@ -1,15 +1,15 @@
 var socket = io();
 
-// Initialize Firebase
-var config = {
-  apiKey: "AIzaSyB38Y5PiCyAoA1jTttFJbN0HliwjkstPvo",
-  authDomain: "battleship-92ba9.firebaseapp.com",
-  databaseURL: "https://battleship-92ba9.firebaseio.com",
-  projectId: "battleship-92ba9",
-  storageBucket: "battleship-92ba9.appspot.com",
-  messagingSenderId: "67219704226"
-};
-firebase.initializeApp(config);
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyBD-0alEnH2GSG4-ap3JiGhDHi0M5MFhSg",
+    authDomain: "event-planner-2bed5.firebaseapp.com",
+    databaseURL: "https://event-planner-2bed5.firebaseio.com",
+    projectId: "event-planner-2bed5",
+    storageBucket: "event-planner-2bed5.appspot.com",
+    messagingSenderId: "654317062394"
+  };
+  firebase.initializeApp(config);
 
 firebase.auth().onAuthStateChanged(function(user) {
   
@@ -27,11 +27,9 @@ firebase.auth().onAuthStateChanged(function(user) {
   }
   else{
     // User is not signed in
-
-    /*var form = document.querySelector('signin-form');
-
-    form.addEventListener('submit')
-    */
+    document.getElementById("signup-form").addEventListener("submit",signup,false);
+    document.getElementById("signin-form").addEventListener("submit",login,false);
+    
   }
 });
 
@@ -43,6 +41,22 @@ function login(){
   var userPass = document.getElementById("password_field").value;
 
   firebase.auth().signInWithEmailAndPassword(userEmail, userPass).catch(function(error) {
+    // Handle Errors here.
+    var errorCode = error.code;
+    var errorMessage = error.message;
+
+    window.alert("Error : " + errorMessage);
+
+    // ...
+  });
+
+}
+
+function signup(){
+  var userEmail = document.getElementById("get_signup_email").value;
+  var userPass = document.getElementById("get_signup_pass").value;
+
+  firebase.auth().createUserWithEmailAndPassword(userEmail, userPass).catch(function(error) {
     // Handle Errors here.
     var errorCode = error.code;
     var errorMessage = error.message;

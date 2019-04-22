@@ -11,7 +11,7 @@
   <h1>Battleship</h1>
   <div id="wrapper">
     <div id="signin">
-      <form id="signin-form">
+      <form id="signin-form" action = "/login" method = "POST">
         <h2 id="login-title">Login</h2>
         <hr class="bar" />
         <div>
@@ -30,11 +30,10 @@
         <span>OR</span>
         <hr class="bar" />
       </div>
-      <a href="#" id="signup-button" class="secondary-btn">Create an account</a>
+      <a href="signup" id="signup-button" class="secondary-btn" action="/getsignup" method="GET">Create an account</a>
     </div>
   </div>
   
 <script src="https://www.gstatic.com/firebasejs/5.10.0/firebase.js"></script>
-<script src="login.js"></script>
 </body>
 </html>
