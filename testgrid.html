@@ -8,7 +8,7 @@
     </head>
 <body>
     <body>
-    <canvas id="myCanvas" width="1000" height="1000"></canvas>
+    <canvas id="myCanvas" width="2000" height="1000"></canvas>
 </body>
     <script type="text/javascript">
         function getSquare(canvas, evt) {
@@ -20,18 +20,22 @@
 }
 
 var locations = [
-    [1, -1, -1, -1, -1],
-    [-1, 1, -1, -1, -1],
-    [-1, -1, 1, -1, -1],
-    [-1, -1, -1, 1, -1],
-    [-1, -1, -1, -1, 1]
+    [-1, -1, -1, -1, -1, 99, 99, 99, 99, 99],
+    [-1, -1, -1, -1, -1, 99, 99, 99, 99, 99],
+    [-1, -1, -1, -1, -1, 99, 99, 99, 99, 99],
+    [-1, -1, -1, -1, -1, 99, 99, 99, 99, 99],
+    [-1, -1, -1, -1, -1, 99, 99, 99, 99, 99]
 ];
 
-var blocksPlaced = 0;
+var blocksPlaced1 = 0;
+var blocksPlaced2 = 0;
 var maxBlocks = 6;
+var playerTurn = 0;
+var ended = 0;
+var placed = 0;
 
 function drawGrid(context) {
-    for (var x = 0.5; x < 1441; x += 200) {
+    for (var x = 0.5; x < 2880; x += 200) {
       context.moveTo(x, 0);
       context.lineTo(x, 10000);
     }
@@ -45,47 +49,118 @@ function drawGrid(context) {
     context.stroke();
 }
 
-function fillSquare(context, x, y){
+function setSquare(context, x, y){
     var xfloor = Math.floor(x / 200);
     var yfloor = Math.floor(y / 200);
-    if (blocksPlaced > 5) {
-        if (locations[xfloor][yfloor] === 0) {
-            context.fillStyle = "#990000";
-            
+
+    if (playerTurn == 0) {
+        if (xfloor < 5) {
+            if (locations[yfloor][xfloor] == 0) {
+                locations[yfloor][xfloor] = 1;
+                context.fillStyle = "#FFFF33";
+                context.fillRect(x,y,199,199);
+                console.log(blocksPlaced2);
+                blocksPlaced2--;
+            } else {
+                context.fillStyle = "#FFFFFF";
+                context.fillRect(x,y,199,199);
+            }
+            playerTurn = 1;
         } else {
-            context.fillStyle = "#A0A0A0";
+            console.log("you are handicapped");
         }
-        context.fillRect(x,y,199,199);
-        return;
+    } else if (playerTurn == 1) {
+        if (xfloor > 4) {
+            if (locations[yfloor][xfloor] == 100) {
+                locations[yfloor][xfloor] = 101;
+                context.fillStyle = "#FFFF33";
+                context.fillRect(x, y, 199, 199);
+                console.log(blocksPlaced1);
+                blocksPlaced1--;
+            } else {
+                context.fillStyle = "#000000";
+                context.fillRect(x,y,199,199);
+            }
+            playerTurn = 0;
+        } else {
+            console.log("you are handicapped");
+        }
     } else {
-        context.fillStyle = "#66CC00";
-        blocksPlaced++;
-        context.fillRect(x,y,199,199);
-        locations[xfloor][yfloor] = 0;
-        return;
+        console.log("the fuck");
     }
-    /**if (locations[xfloor][yfloor] === -1) {
-        context.fillStyle = "red";
-    } else if (locations[xfloor][yfloor] === 1) {
-        context.fillStyle = "green";
+
+    var k = 0;
+    var i = 0;
+
+    /**for (k = 0; k < 10; k++) {
+        for (i = 0; i < 5; i++) {
+            if (locations[i][k] == 0) {
+                foundZero = 1;
+            }
+            if (locations[i][k] == 100) {
+                foundHundred = 1;
+            }
+        }
+    }**/
+
+    if (blocksPlaced2 === 0) {
+        for (k = 0; k < 10; k++) {
+            for (i = 0; i < 5; i++) {
+                context.fillStyle = "#FF66FF";
+                context.fillRect(200*k + 1, 200*i + 1, 199, 199);
+                ended = 1;
+            }
+        }
+    } else if (blocksPlaced1 === 0) {
+        for (k = 0; k < 10; k++) {
+            for (i = 0; i < 5; i++) {
+                context.fillStyle = "#4C0099";
+                context.fillRect(200*k + 1, 200*i + 1, 199, 199);
+                ended = 1;
+            }
+        }
+    }
+}
+
+function placeShips(context, x, y) {
+    var xfloor = Math.floor(x / 200);
+    var yfloor = Math.floor(y / 200);
+    if (blocksPlaced1 < 6) {
+        if (xfloor > 4) {
+            locations[yfloor][xfloor] = 100;
+            context.fillStyle = "#66CC00";
+            context.fillRect(x,y,199,199);
+            blocksPlaced1++;
+        } else {
+            // do nothing
+        }
     } else {
-        context.fillStyle = "gray";
+        if (xfloor < 5) {
+            locations[yfloor][xfloor] = 0;
+            context.fillStyle = "#CC0066";
+            context.fillRect(x,y,199,199);
+            blocksPlaced2++;
+        } else {
+            // do nothing
+        }
+        if (blocksPlaced2 == 6) {
+            placed = 1;
+        }
     }
-    
-    context.fillRect(x,y,199,199);**/
 }
 
 function initialFill(context) {
-    context.fillStyle = "#0066CC";
     var j;
     var k;
-    for (j = 0; j < 5; j++) {
+    for (j = 0; j < 10; j++) {
+        context.fillStyle = "#0066CC";
+        if (j > 4) {
+            context.fillStyle = "#3399FF";
+        }
         for (k = 0; k < 5; k++) {
             context.fillRect(200*j + 1, 200*k + 1, 199, 199);
         }
     }
-
-    context.fillRect(0, 0, 200, 200);
 }
 
 var canvas = document.getElementById('myCanvas');
@@ -98,7 +173,16 @@ initialFill(context);
 
 canvas.addEventListener('click', function(evt) {
     var mousePos = getSquare(canvas, evt);
-    fillSquare(context, mousePos.x, mousePos.y)
+
+    if (ended == 0) {
+        if (((blocksPlaced1 != 6) || (blocksPlaced2 != 6)) && (placed == 0)) {
+            placeShips(context, mousePos.x, mousePos.y);
+        } else {
+            setSquare(context, mousePos.x, mousePos.y)
+        }
+    }
+    
+    
     //document.write(x);
     //document.write(y);
 }, false);
