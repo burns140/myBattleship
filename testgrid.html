@@ -22,12 +22,27 @@ function getSquare(canvas, evt) {
     };
 }
 
+var usernum = -1;
+
 var locations = [
     [-1, -1, -1, -1, -1, 99, 99, 99, 99, 99],
     [-1, -1, -1, -1, -1, 99, 99, 99, 99, 99],
     [-1, -1, -1, -1, -1, 99, 99, 99, 99, 99],
     [-1, -1, -1, -1, -1, 99, 99, 99, 99, 99],
     [-1, -1, -1, -1, -1, 99, 99, 99, 99, 99]
+];
+
+var locations4 = [
+    [-1, -1, -1, -1, -1, 99, 99, 99, 99, 99],
+    [-1, -1, -1, -1, -1, 99, 99, 99, 99, 99],
+    [-1, -1, -1, -1, -1, 99, 99, 99, 99, 99],
+    [-1, -1, -1, -1, -1, 99, 99, 99, 99, 99],
+    [-1, -1, -1, -1, -1, 99, 99, 99, 99, 99],
+    [-51, -51, -51, -51, -51, 49, 49, 49, 49, 49],
+    [-51, -51, -51, -51, -51, 49, 49, 49, 49, 49],
+    [-51, -51, -51, -51, -51, 49, 49, 49, 49, 49],
+    [-51, -51, -51, -51, -51, 49, 49, 49, 49, 49],
+    [-51, -51, -51, -51, -51, 49, 49, 49, 49, 49]
 ];
 
 var blocksPlaced1 = 0;
@@ -95,17 +110,6 @@ function setSquare(context, x, y){
     var k = 0;
     var i = 0;
 
-    /**for (k = 0; k < 10; k++) {
-        for (i = 0; i < 5; i++) {
-            if (locations[i][k] == 0) {
-                foundZero = 1;
-            }
-            if (locations[i][k] == 100) {
-                foundHundred = 1;
-            }
-        }
-    }**/
-
     if (blocksPlaced2 === 0) {
         for (k = 0; k < 10; k++) {
             for (i = 0; i < 5; i++) {
@@ -130,18 +134,28 @@ function placeShips(context, x, y) {
     var yfloor = Math.floor(y / 200);
     if (blocksPlaced1 < 6) {
         if (xfloor > 4) {
+            if (locations[yfloor][xfloor] == 100) {
+                return;
+            }
             locations[yfloor][xfloor] = 100;
             context.fillStyle = "#66CC00";
-            context.fillRect(x,y,199,199);
+            if ((usernum % 2) == 0) {
+                context.fillRect(x,y,199,199);
+            }
             blocksPlaced1++;
         } else {
             // do nothing
         }
     } else {
         if (xfloor < 5) {
+            if (locations[yfloor][xfloor] == 0) {
+                return;
+            }
             locations[yfloor][xfloor] = 0;
             context.fillStyle = "#CC0066";
-            context.fillRect(x,y,199,199);
+            if (usernum == 1) {
+                context.fillRect(x,y,199,199);
+            }
             blocksPlaced2++;
         } else {
             // do nothing
@@ -189,19 +203,6 @@ drawGrid(context);
 initialFill(context);
 
 
-/**$(function () {
-    var socket = io();
-    $('form').submit(function(e) {
-        e.preventDefault();
-        socket.emit('chat message', $('#m').val());
-        $('#m').val('');
-        return false;
-    });
-    socket.on('chat message', function(msg) {
-        console.log('fuck this shit');
-    });
-});**/
-
 $(function() {
     var socket = io();
     canvas.addEventListener('click', function(e) {
@@ -213,14 +214,20 @@ $(function() {
     socket.on('clicked', function(msg) {
         console.log(msg);
         if (ended == 0) {
-        if (((blocksPlaced1 != 6) || (blocksPlaced2 != 6)) && (placed == 0)) {
-            placeShips(context, msg.x, msg.y);
-        } else {
-            setSquare(context, msg.x, msg.y)
+            if (((blocksPlaced1 != 6) || (blocksPlaced2 != 6)) && (placed == 0)) {
+                placeShips(context, msg.x, msg.y);
+            } else {
+                setSquare(context, msg.x, msg.y)
+            }
         }
-    }
-        //testFill(context);
     });
+    socket.on('setusernum', function(msg) {
+        console.log('settingusernum');
+        console.log(msg);
+        if (usernum === -1) {
+            usernum = msg;  
+        }
+    })
 });
 
 /**canvas.addEventListener('click', function(evt) {

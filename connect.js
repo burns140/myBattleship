@@ -1,22 +1,21 @@
 var app = require('express')();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
+var playernum = 0;
 
-/**http.createServer(function (req, res) {
-	//res.end('Hello World');
-	var min = 1;
-	var max = 1000000;
-	var random = Math.floor(Math.random() * (+max - +min) + +min);
-	res.writeHead(200, {'Content-Type': 'text/html'});
-	//res.write('<canvas id=\"myCanvas\" width=\"10000\" height=\"10000\"></canvas>');
-	res.end('Random Number Generated: ' + random.toString());
-}).listen(3000);**/
 
 app.get('/', function(req, res) {
+	playernum++;
+	if (playernum > 2) {
+		res.end('<h1>fuck you</h1>');
+		return;
+	}
 	res.sendFile(__dirname + '/testgrid.html');
 });
 
 io.on('connection', function(socket) {
+	io.emit('setusernum', playernum);
+	console.log(playernum);
 	console.log('user connected');
 	socket.on('disconnect', function() {
 		console.log('user disconnected');
