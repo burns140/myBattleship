@@ -77,7 +77,7 @@ function setSquare(context, x, y){
     var xfloor = Math.floor(x / 200);
     var yfloor = Math.floor(y / 200);
 
-    if (playerTurn == 0) {
+    if (playerTurn == 0 && usernum == 1) {
         if (xfloor < 5) {
             if (locations[yfloor][xfloor] == 0) {
                 locations[yfloor][xfloor] = 1;
@@ -93,7 +93,7 @@ function setSquare(context, x, y){
         } else {
             console.log("you are handicapped");
         }
-    } else if (playerTurn == 1) {
+    } else if (playerTurn == 1 && usernum == 2) {
         if (xfloor > 4) {
             if (locations[yfloor][xfloor] == 100) {
                 locations[yfloor][xfloor] = 101;

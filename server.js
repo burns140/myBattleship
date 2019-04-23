@@ -3,7 +3,7 @@ var PORT = process.env.PORT || 3000;
 
 var firebase = require('firebase');
 var express = require('express');
-var app = express();
+var app = require('express')();
 var path = require('path');
 var http = require('http').createServer(app);
 const bodyParser = require("body-parser");
@@ -23,7 +23,7 @@ io.on('connection', function(socket) {
 	});
 	socket.on('ended', function(msg) {
 		playernum = 0;
-	})
+	});
 });
 
 // Allow static files from client directory to run
@@ -67,7 +67,7 @@ app.get('/play', function(req, res){
 		res.end('<h1>Room is full</h1>');
 		return;
 	}
-  res.sendFile(path.join(__dirname,'testgrid.html'));
+  res.sendFile(__dirname,'testgrid.html');
   console.log('testgrid page sent')
 });
 
