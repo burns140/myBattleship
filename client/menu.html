@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menu • Battleship</title>
+  <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Battleship</h1>
+  <div id="wrapper-menu">
+    <div id="menu" class="vertical-menu">
+      <a href="play" id="play-button" class="primary-btn" action="/play" method="GET">PLAY</a>
+      <a href="leaderboard" id="leaderboard-button" class="primary-btn" action="/leaderboard" method="GET">LEADERBOARD</a>
+      <a id="logout-button" class="primary-btn" type="button" onclick="logout();">LOGOUT</a>
+    </div>
+  </div>
+    <!-- Loads the entire Firebase JavaScript SDK -->
+    <script src="https://www.gstatic.com/firebasejs/5.10.0/firebase.js"></script>
+    <script type="text/javascript">
+    // Initialize Firebase
+    var config = {
+    apiKey: "AIzaSyB38Y5PiCyAoA1jTttFJbN0HliwjkstPvo",
+    authDomain: "battleship-92ba9.firebaseapp.com",
+    databaseURL: "https://battleship-92ba9.firebaseio.com",
+    projectId: "battleship-92ba9",
+    storageBucket: "battleship-92ba9.appspot.com",
+    messagingSenderId: "67219704226"
+    };
+    firebase.initializeApp(config);
+      
+    function logout(){
+        firebase.auth().signOut().then(function() {
+          window.location.href = "/";
+          }).catch(function(error) {
+              window.alert("Logout failed");
+          });
+      }
+    </script>
+</body>
+</html>

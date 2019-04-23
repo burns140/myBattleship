@@ -11,7 +11,7 @@
   <h1>Battleship</h1>
   <div id="wrapper">
     <div id="signup">
-      <form id="signup-form" action = "/signup" method = "POST">
+      <form id="signup-form">
         <h2 id="signup-title">Signup</h2>
         <hr class="bar" />
         <div>
@@ -20,11 +20,13 @@
         <div>
           <input id="get_signup_pass" type="password" class="text-input" placeholder="Password" name="password"/>
         </div>
-        <button id="signup-form-button" type="submit" class="primary-btn">Sign Up</button>
+        <button id="signup-form-button" type="button" class="primary-btn" onclick="signup();">Sign Up</button>
       </form>
+      <a href="login" id="go-back-to-login" action="/login" method="GET">Back to Login</a>
     </div>
   </div>
-  
+<!-- Loads the entire Firebase JavaScript SDK -->
 <script src="https://www.gstatic.com/firebasejs/5.10.0/firebase.js"></script>
+<script src="login.js"></script>
 </body>
 </html>

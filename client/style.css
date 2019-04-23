@@ -30,9 +30,18 @@ h6 {
   height: 80vh;
 }
 
-/* Sign In */
+#wrapper-menu {
+  display: flex;
+  flex-direction: row;
+  flex: auto;
+  align-items: center;
+  justify-content: center;
+  height: 50vh;
+}
+
 #signin,
-#signup {
+#signup,
+#menu {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -48,8 +57,19 @@ h6 {
 }
 
 #signin .bar,
-#signup .bar {
+#signup .bar{
   margin-bottom: 1.4em;
+}
+
+#menu .primary-btn {
+  letter-spacing: 2px;
+  width: 25%;
+  height: 50%;
+  margin-bottom: 1.1em;
+}
+
+#signin .bar2{
+  margin-bottom: 0.9em;
 }
 
 #signin .text-input,
@@ -67,6 +87,7 @@ h6 {
 
 #signin .primary-btn,
 #signup .primary-btn {
+  letter-spacing: 1.2px;
   width: 100%;
 }
 
@@ -96,7 +117,7 @@ h6 {
   align-items: center;
 }
 
-#signin .or .bar,
+#signin .or .bar2,
 #signup .bar {
   flex: auto;
   border: none;
@@ -146,6 +167,6 @@ h6 {
 }
 
 .secondary-btn:hover {
-  border-color: #ff7b39;
-  color: #3062e7;
+  border-color: #93bfe9;
+  color: #93bfe9;
 }

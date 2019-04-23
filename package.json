@@ -17,8 +17,9 @@
     "url": "https://github.com/dhairyaa/battleship/issues"
   },
   "dependencies": {
-    "express": "^4.15.2",
+    "express": "^4.16.4",
     "firebase": "^5.10.0",
+    "jscore": "^1.0.9",
     "socket.io": "^2.2.0"
   }
 }

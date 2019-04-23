@@ -11,29 +11,30 @@
   <h1>Battleship</h1>
   <div id="wrapper">
     <div id="signin">
-      <form id="signin-form" action = "/login" method = "POST">
+      <form id="signin-form">
         <h2 id="login-title">Login</h2>
         <hr class="bar" />
         <div>
-          <input id="get_email" type="text" class="text-input" placeholder="Email"/>
+          <input id="get_email" type="text" class="text-input" placeholder="Email" name="email"/>
         </div>
         <div>
-          <input id="get_pass" type="password" class="text-input" placeholder="Password" />
+          <input id="get_pass" type="password" class="text-input" placeholder="Password" name="password"/>
         </div>
-        <button id="signin-button" type="submit" class="primary-btn">Sign In</button>
+        <button id="signin-button" type="submit" class="primary-btn" onclick="login();">Sign In</button>
       </form>
       <div class="links">
       <a href="#" id="forgot-password">Forgot Password</a>
       </div>
       <div class="or">
-        <hr class="bar" />
+        <hr class="bar2" />
         <span>OR</span>
-        <hr class="bar" />
+        <hr class="bar2" />
       </div>
-      <a href="signup" id="signup-button" class="secondary-btn" action="/getsignup" method="GET">Create an account</a>
+      <a href="signup" id="signup-button" class="secondary-btn" action="/signup" method="GET">Create an account</a>
     </div>
   </div>
-  
+<!-- Loads the entire Firebase JavaScript SDK -->
 <script src="https://www.gstatic.com/firebasejs/5.10.0/firebase.js"></script>
+<script src="login.js"></script>
 </body>
 </html>
