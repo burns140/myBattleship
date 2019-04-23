@@ -4,8 +4,8 @@ var PORT = process.env.PORT || 3000;
 var firebase = require('firebase');
 var express = require('express');
 var app = express();
-var path = require('path');
 var http = require('http').createServer(app);
+var path = require('path');
 const bodyParser = require("body-parser");
 var io = require('socket.io')(http);
 var playernum = 0;
@@ -23,7 +23,7 @@ io.on('connection', function(socket) {
 	});
 	socket.on('ended', function(msg) {
 		playernum = 0;
-	})
+	});
 });
 
 // Allow static files from client directory to run
@@ -72,6 +72,6 @@ app.get('/play', function(req, res){
 });
 
 // Listen for requests at PORT
-app.listen(PORT, function() {
+http.listen(PORT, function() {
   console.log('Battleship server running on port : '+ PORT);
 });

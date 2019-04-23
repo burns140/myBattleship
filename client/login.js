@@ -16,6 +16,7 @@ firebase.auth().onAuthStateChanged(function(user){
       if(prevFunc == "signup"){
         try{
           createNewUser();
+          prevFunc == "login"
         }catch(e){
           window.alert(e.message);
         }
@@ -27,8 +28,6 @@ firebase.auth().onAuthStateChanged(function(user){
 
 function login(){
 
-  prevFunc = "login";
-
   var userEmail = document.getElementById("get_email").value;
   var userPass = document.getElementById("get_pass").value;
 
@@ -36,6 +35,7 @@ function login(){
     window.alert("email and password can't be empty");
   }
   else{
+    prevFunc = "login";
     firebase.auth().signInWithEmailAndPassword(userEmail, userPass).catch(function(error) {
       // Handle Errors here.
       var errorCode = error.code;
