@@ -24,6 +24,9 @@ io.on('connection', function(socket) {
 		console.log('somebody shot something');
 		io.emit('clicked', msg);
 	});
+	socket.on('ended', function(msg) {
+		playernum = 0;
+	})
 });
 
 http.listen(3000, function() {

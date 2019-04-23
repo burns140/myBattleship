@@ -51,6 +51,8 @@ var maxBlocks = 6;
 var playerTurn = 0;
 var ended = 0;
 var placed = 0;
+var socket = io();
+
 
 function drawGrid(context) {
     for (var x = 0.5; x < 2880; x += 200) {
@@ -115,6 +117,7 @@ function setSquare(context, x, y){
             for (i = 0; i < 5; i++) {
                 context.fillStyle = "#FF66FF";
                 context.fillRect(200*k + 1, 200*i + 1, 199, 199);
+                socket.emit('ended', 'ended');
                 ended = 1;
             }
         }
@@ -139,7 +142,7 @@ function placeShips(context, x, y) {
             }
             locations[yfloor][xfloor] = 100;
             context.fillStyle = "#66CC00";
-            if ((usernum % 2) == 0) {
+            if ((usernum % 2) == 1) {
                 context.fillRect(x,y,199,199);
             }
             blocksPlaced1++;
@@ -153,7 +156,7 @@ function placeShips(context, x, y) {
             }
             locations[yfloor][xfloor] = 0;
             context.fillStyle = "#CC0066";
-            if (usernum == 1) {
+            if ((usernum % 2) == 0) {
                 context.fillRect(x,y,199,199);
             }
             blocksPlaced2++;
@@ -201,10 +204,10 @@ var context = canvas.getContext('2d');
 drawGrid(context);
 
 initialFill(context);
-
+//var socket = io();
 
 $(function() {
-    var socket = io();
+//    var socket = io();
     canvas.addEventListener('click', function(e) {
         e.preventDefault();
         var mousePos = getSquare(canvas, e);
