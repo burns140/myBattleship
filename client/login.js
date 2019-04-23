@@ -9,7 +9,6 @@ var config = {
 };
 firebase.initializeApp(config);
 
-var database = firebase.database();
 var prevFunc = "temp";
 
 firebase.auth().onAuthStateChanged(function(user){

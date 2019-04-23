@@ -5,7 +5,26 @@ var firebase = require('firebase');
 var express = require('express');
 var app = express();
 var path = require('path');
+var http = require('http').createServer(app);
 const bodyParser = require("body-parser");
+var io = require('socket.io')(http);
+var playernum = 0;
+
+io.on('connection', function(socket) {
+	io.emit('setusernum', playernum);
+	console.log(playernum);
+	console.log('user connected');
+	socket.on('disconnect', function() {
+		console.log('user disconnected');
+	});
+	socket.on('clicked', function(msg) {
+		console.log('somebody shot something');
+		io.emit('clicked', msg);
+	});
+	socket.on('ended', function(msg) {
+		playernum = 0;
+	})
+});
 
 // Allow static files from client directory to run
 app.use(express.static('client'));
@@ -43,6 +62,11 @@ app.get('/menu', function(req, res){
 
 // Respond with menu page
 app.get('/play', function(req, res){
+  playernum++;
+	if (playernum > 2) {
+		res.end('<h1>Room is full</h1>');
+		return;
+	}
   res.sendFile(path.join(__dirname,'testgrid.html'));
   console.log('testgrid page sent')
 });

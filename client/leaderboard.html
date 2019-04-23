@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset=utf-8 />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leaderboard • Battleship</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+  <link rel="stylesheet" href="style.css"> 
+</head>
+<body>
+  <div class="sticky">
+        <a href="menu.html" id="backtomenu" class="primary-btn" action="/menu" method="GET">MENU</a>
+  </div>
+  <h1>Battleship</h1>
+  <div id="wrapper-leaderboard">
+    <div id="leaderboard">                  
+        <table class="table">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Played</th>
+                    <th scope="col">Wins</th>
+                </tr>
+            </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>Player1</td>
+                        <td>2</td>
+                        <td>2</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">2</th>
+                        <td>Player2</td>
+                        <td>2</td>
+                        <td>1</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">3</th>
+                        <td>Player3</td>
+                        <td>2</td>
+                        <td>0</td>
+                    </tr>
+                </tbody>
+        </table>
+    </div>
+  </div>
+<!-- Loads the entire Firebase JavaScript SDK -->
+<script src="https://www.gstatic.com/firebasejs/5.10.0/firebase.js"></script>
+<script src="leaderboard.js"></script>
+</body>
+</html>

@@ -51,7 +51,11 @@ var maxBlocks = 6;
 var playerTurn = 0;
 var ended = 0;
 var placed = 0;
-var socket = io();
+try{
+    var socket = io();
+}catch(e){
+    window.alert('no socket');
+}
 
 
 function drawGrid(context) {
