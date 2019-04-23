@@ -10,8 +10,11 @@
     <body>
     <canvas id="myCanvas" width="2000" height="1000"></canvas>
 </body>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
     <script type="text/javascript">
-        function getSquare(canvas, evt) {
+    
+function getSquare(canvas, evt) {
     var rect = canvas.getBoundingClientRect();
     return {
         x: 1 + (evt.clientX - rect.left) - (evt.clientX - rect.left)%200,
@@ -163,6 +166,20 @@ function initialFill(context) {
     }
 }
 
+function testFill(context) {
+    var j;
+    var k;
+    for (j = 0; j < 10; j++) {
+        context.fillStyle = "#000000";
+        if (j > 4) {
+            context.fillStyle = "#000000";
+        }
+        for (k = 0; k < 5; k++) {
+            context.fillRect(200*j + 1, 200*k + 1, 199, 199);
+        }
+    }
+}
+
 var canvas = document.getElementById('myCanvas');
 var context = canvas.getContext('2d');
 
@@ -171,7 +188,42 @@ drawGrid(context);
 
 initialFill(context);
 
-canvas.addEventListener('click', function(evt) {
+
+/**$(function () {
+    var socket = io();
+    $('form').submit(function(e) {
+        e.preventDefault();
+        socket.emit('chat message', $('#m').val());
+        $('#m').val('');
+        return false;
+    });
+    socket.on('chat message', function(msg) {
+        console.log('fuck this shit');
+    });
+});**/
+
+$(function() {
+    var socket = io();
+    canvas.addEventListener('click', function(e) {
+        e.preventDefault();
+        var mousePos = getSquare(canvas, e);
+        socket.emit('clicked', mousePos);
+        return false;
+    });
+    socket.on('clicked', function(msg) {
+        console.log(msg);
+        if (ended == 0) {
+        if (((blocksPlaced1 != 6) || (blocksPlaced2 != 6)) && (placed == 0)) {
+            placeShips(context, msg.x, msg.y);
+        } else {
+            setSquare(context, msg.x, msg.y)
+        }
+    }
+        //testFill(context);
+    });
+});
+
+/**canvas.addEventListener('click', function(evt) {
     var mousePos = getSquare(canvas, evt);
 
     if (ended == 0) {
@@ -185,7 +237,7 @@ canvas.addEventListener('click', function(evt) {
     
     //document.write(x);
     //document.write(y);
-}, false);
+}, false);**/
     </script>
 </body>
 </html>
