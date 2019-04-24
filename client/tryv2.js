@@ -114,11 +114,13 @@ $(function() {
 		
 	});
 	gameBoardContainer2.addEventListener('click', function(e) {
-		if (blocksPlacedMe == maxBlocks && blocksPlacedThem == maxBlocks && myTurn == 1) {
+		console.log('placed: ' + placed);
+		console.log('myTurn: ' + myTurn);
+		if (placed == 1 && myTurn == 1) {
 			e.preventDefault();
 			shotShip(e.target.id, 0);
 			socket.emit('clicked', e.target.id + usernum);
-			console.log('send clicked 2');
+			//console.log('send clicked 2');
 			return false;
 		} else {
 			return false;
@@ -134,7 +136,11 @@ $(function() {
 				//console.log('blocksPlacedMe: ' + blocksPlacedMe);
 				placeShips(msg, 1);
 			} else {
-				placed = 1;
+				console.log('setting placed');
+				if (placed == 0) {
+					placed = 1;
+					socket.emit('placed', 'placed');
+				}
 				shotShip(msg, 1);
 			}
 		}
@@ -142,10 +148,14 @@ $(function() {
 	socket.on('setusernum', function(msg) {
 		if (usernum === -1) {
 			usernum = msg;
+			console.log('setting usernum: ' + usernum);
 			if (usernum == 1) {
 				myTurn = 1;
 			}
 		}
+	});
+	socket.on('placed', function(msg) {
+		placed = 1;
 	});
 });
 
@@ -153,11 +163,15 @@ function shotShip(str1, num) {
 	console.log('shotship');
 	var str = str1.substring(0, 4);
 	var me = str1.substring(4, 5);
+	if (usernum != me) {
+		myTurn = 1;
+		console.log('my turn now');
+	}
 	if (usernum == me && num !== 0) {
 		return;
 	}
 	if (num == 0) {	
-		console.log(str);
+		//console.log(str);
 		var element = document.getElementById(str);
 		var row = str.substring(1, 2);
 		var col = str.substring(2, 3);
@@ -174,6 +188,7 @@ function shotShip(str1, num) {
 		}
 		myTurn = 0;
 	} else if (num == 1) {
+		console.log('received request from other person');
 		var str2 = '';
 		if (str.substring(3, 4) == '1') {
 			str2 = str.substring(0, 3) + '2';
@@ -197,7 +212,9 @@ function shotShip(str1, num) {
 			//evt.stopPropagation();
 			//return;
 		}
+		//console.log('myturn before switch: ' + myTurn);
 		myTurn = 1;
+		//console.log('myturn after switch: ' + myTurn);
 	}
 	if (blocksPlacedMe == 0 || blocksPlacedThem == 0) {
 		ended = 1;
@@ -205,11 +222,11 @@ function shotShip(str1, num) {
 }
 
 function placeShips(str1, num) {
-	console.log('placing');
+	//console.log('placing');
 	var str = str1.substring(0, 4);
 	var me = str1.substring(4, 5);
-	console.log(str);
-	console.log(me);
+	//console.log(str);
+	//console.log(me);
 	if (usernum == me && num !== 0) {
 		return;
 	}

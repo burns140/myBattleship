@@ -26,6 +26,9 @@ io.on('connection', function(socket) {
 	socket.on('ended', function(msg) {
 		playernum = 0;
 	});
+	socket.on('placed', function(msg) {
+		io.emit('placed', msg);
+	})
 });
 
 // Allow static files from client directory to run
