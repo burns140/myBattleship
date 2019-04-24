@@ -12,9 +12,9 @@ var config = {
 var userRef = firebase.database().ref().child('users');
 
 // Attach an asynchronous callback to read the data at our posts reference
-ref.on("value", function(snapshot) {
+/*ref.on("value", function(snapshot) {
   console.log(snapshot.val());
 }, function (errorObject) {
   console.log("The read failed: " + errorObject.code);
-});
+});*/
   

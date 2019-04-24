@@ -62,13 +62,13 @@ app.get('/menu', function(req, res){
 });
 
 // Respond with menu page
-app.get('/play', function(req, res){
+app.get('/testgrid', function(req, res){
   playernum++;
 	if (playernum > 2) {
 		res.end('<h1>Room is full</h1>');
 		return;
 	}
-  res.sendFile(__dirname,'testgrid.html');
+  res.sendFile(__dirname,'client','testgrid.html');
   console.log('testgrid page sent')
 });
 
