@@ -45,8 +45,23 @@ userRef.on("value", function(snapshot) {
 });
 
 function mycompare(a, b){
-  if(a.wins < b.wins) return 1;
-  if(b.wins < a.wins) return -1;
-  return 0;
+  var perA = a.wins/a.played;
+  var perB = b.wins/b.played;
+  /*if(a.wins < b.wins) return 1;
+  if(b.wins < a.wins) return -1;*/
+  var returnCom = 0;
+  if(perA < perB) returnCom = 1;
+  if(perB < perA) returnCom = -1;
+  else{
+    if(a.wins == b.wins){
+      if(a.played > b.played) returnCom = 1;
+      else returnCom = -1;
+    } 
+    else if(a.played == b.played){
+      if(a.wins < b.wins) returnCom = 1;
+      else returnCom = -1;
+    }
+  }
+  return returnCom;
 }
   
