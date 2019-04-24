@@ -8,8 +8,34 @@ var blocksPlacedThem = 0;
 var maxBlocks = 10;
 var playerTurn = 0;
 var ended = 0;
+var myTurn = 0;
 var placed = 0;
 var socket = io();
+var gameBoard = [
+				[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+				[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+				[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+				[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+				[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+				[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+				[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+				[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+				[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+				[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
+				];
+
+var gameBoard2 = [
+				[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+				[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+				[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+				[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+				[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+				[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+				[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+				[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+				[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+				[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
+				];
 
 // get the container element
 var gameBoardContainer = document.getElementById("gameboard");
@@ -24,7 +50,7 @@ for (i = 0; i < cols; i++) {
 		gameBoardContainer.appendChild(square);
 
     // give each div element a unique id based on its row and column, like "s00"
-		square.id = 's' + j + i;			
+		square.id = 's' + j + i + '1';			
 		
 		// set each grid square's coordinates: multiples of the current row or column number
 		var topPosition = j * squareSize;
@@ -45,7 +71,7 @@ for (i = 0; i < cols; i++) {
 		gameBoardContainer2.appendChild(square);
 
     // give each div element a unique id based on its row and column, like "s00"
-		square.id = 's' + j + i;			
+		square.id = 's' + j + i + '2';			
 		
 		// set each grid square's coordinates: multiples of the current row or column number
 		var topPosition = j * squareSize;
@@ -73,129 +99,157 @@ var hitCount = 0;
 
    0 = empty, 1 = part of a ship, 2 = a sunken part of a ship, 3 = a missed shot
 */
-var gameBoard = [
-				[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-				[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-				[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-				[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-				[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-				[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-				[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-				[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-				[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-				[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
-				];
 
-var gameBoard2 = [
-				[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-				[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-				[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-				[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-				[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-				[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-				[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-				[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-				[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-				[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
-				];
 
 $(function() {
-	gameBoard.addEventListener('click', function(e) {
-		if (blocksPlacedMe < 6) {
+	gameBoardContainer.addEventListener('click', function(e) {
+		if (blocksPlacedMe < maxBlocks && placed == 0) {
 			e.preventDefault();
-			placeShips(e, 0);
-			socket.emit('clicked', e);
+			placeShips(e.target.id, 0);
+			socket.emit('clicked', e.target.id + usernum);
 			return false;
 		} else {
 			return false;
 		}
 		
 	});
-	gameBoard2.addEventListener('click', function(e) {
-		e.preventDefault();
-		shotShip(e, 0);
-		socket.emit('clicked', e);
-		return false;
+	gameBoardContainer2.addEventListener('click', function(e) {
+		if (blocksPlacedMe == maxBlocks && blocksPlacedThem == maxBlocks && myTurn == 1) {
+			e.preventDefault();
+			shotShip(e.target.id, 0);
+			socket.emit('clicked', e.target.id + usernum);
+			console.log('send clicked 2');
+			return false;
+		} else {
+			return false;
+		}
+		
 	});
 	socket.on('clicked', function(msg) {
+		//console.log('received clicked');
+		//console.log('e.target on received: ' + msg.id);
 		if (ended == 0) {
-			if ((blocksPlacedMe != 6 || blocksPlacedThem != 6) && (placed == 0)) {
-				placeShips(e, 1);
+			if ((blocksPlacedMe != maxBlocks || blocksPlacedThem != maxBlocks) && (placed == 0)) {
+				//console.log('blocksPlacedThem: ' + blocksPlacedThem);
+				//console.log('blocksPlacedMe: ' + blocksPlacedMe);
+				placeShips(msg, 1);
 			} else {
 				placed = 1;
-				shotShip(e, 1);
+				shotShip(msg, 1);
 			}
 		}
 	});
 	socket.on('setusernum', function(msg) {
 		if (usernum === -1) {
 			usernum = msg;
+			if (usernum == 1) {
+				myTurn = 1;
+			}
 		}
 	});
 });
 
-function shotShip(evt, num) {
-	var row = evt.target.id.substring(1, 2);
-	var col = evt.target.id.substring(2, 3);
-
-	if (num == 0) {
+function shotShip(str1, num) {
+	console.log('shotship');
+	var str = str1.substring(0, 4);
+	var me = str1.substring(4, 5);
+	if (usernum == me && num !== 0) {
+		return;
+	}
+	if (num == 0) {	
+		console.log(str);
+		var element = document.getElementById(str);
+		var row = str.substring(1, 2);
+		var col = str.substring(2, 3);
 		if (gameBoard2[row][col] == 0) {
-			evt.target.style.background = '#aaa';
 			gameBoard2[row][col] = 1;
+			element.style.background = 'red';
 			blocksPlacedThem--;
-			evt.stopPropagation();
-			return;
+			//evt.stopPropagation();
+			//return;
 		} else {
-			evt.target.style.background = '#ccc';
-			evt.stopPropagation();
-			return;
+			element.style.background = 'black';
+			//evt.stopPropagation();
+			//return;
 		}
+		myTurn = 0;
 	} else if (num == 1) {
+		var str2 = '';
+		if (str.substring(3, 4) == '1') {
+			str2 = str.substring(0, 3) + '2';
+		} else {
+			str2 = str.substring(0, 3) + '1';
+		}
+		var element = document.getElementById(str2);
+		var row = str2.substring(1, 2);
+		var col = str2.substring(2, 3);
 		if (gameBoard[row][col] == 0) {
 			gameBoard[row][col] = 1;
-			evt.target.style.background = '#aaa';
+			element.style.background = 'red';
 			blocksPlacedMe--;
-			evt.stopPropagation();
-			return;
+			//evt.stopPropagation();
+			if (blocksPlacedMe == 0) {
+				ended = 1;
+			}
+			//return;
 		} else {
-			evt.target.style.background = '#ccc';
-			evt.stopPropagation();
-			return;
+			element.style.background = 'black';
+			//evt.stopPropagation();
+			//return;
 		}
-	} else {
-		console.log('how did we get here?');
-		evt.stopPropagation();
-		return;
+		myTurn = 1;
+	}
+	if (blocksPlacedMe == 0 || blocksPlacedThem == 0) {
+		ended = 1;
 	}
 }
 
-function placeShips(evt, num) {
+function placeShips(str1, num) {
+	console.log('placing');
+	var str = str1.substring(0, 4);
+	var me = str1.substring(4, 5);
+	console.log(str);
+	console.log(me);
+	if (usernum == me && num !== 0) {
+		return;
+	}
 	if (num == 0) {
-		var row = evt.target.id.substring(1, 2);
-		var col = evt.target.id.substring(2, 3);
-
+		var element = document.getElementById(str);
+		var row = str.substring(1, 2);
+		var col = str.substring(2, 3);
 		if (gameBoard[row][col] == 0) {
 			// do nothing
 		} else {
 			gameBoard[row][col] = 0;
 			blocksPlacedMe++;
-			evt.target.style.background = '#bbb';
+			element.style.background = 'green';
 		}
-	} else {
+	} else if (num == 1) {
+		var str2 = '';
+		if (str.substring(3, 4) == '1') {
+			str2 = str.substring(0, 3) + '2';
+		} else {
+			str2 = str.substring(0, 3) + '1';
+		}
+		var element = document.getElementById(str2);
+		var row = str2.substring(1, 2);
+		var col = str2.substring(2, 3);
 		if (gameBoard2[row][col] == 0) {
 			//do nothing
 		} else {
-			gameBoard2[row][col] == 0;
+			gameBoard2[row][col] = 0;
 			blocksPlacedThem++;
 		}
 	}
 
-	evt.stopPropagation();
+	//evt.stopPropagation();
+
+	return;
 
 }
 
 // set event listener for all elements in gameboard, run fireTorpedo function when square is clicked
-gameBoardContainer.addEventListener("click", fireTorpedo, false);
+/**gameBoardContainer.addEventListener("click", fireTorpedo, false);
 
 // initial code via http://www.kirupa.com/html5/handling_events_for_many_elements.htm:
 function fireTorpedo(e) {
@@ -231,4 +285,4 @@ function fireTorpedo(e) {
 		}		
     }
     e.stopPropagation();
-}
+}**/

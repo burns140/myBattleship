@@ -12,6 +12,7 @@ var io = require('socket.io')(http);
 var playernum = 0;
 
 io.on('connection', function(socket) {
+	playernum++;
 	io.emit('setusernum', playernum);
 	console.log(playernum);
 	console.log("user connected");
