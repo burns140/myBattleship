@@ -217,6 +217,11 @@ function shotShip(str1, num) {
 		//console.log('myturn after switch: ' + myTurn);
 	}
 	if (blocksPlacedMe == 0 || blocksPlacedThem == 0) {
+		if (blocksPlacedMe == 0) {
+			window.alert('Other player won');
+		} else {
+			window.alert('You won!');
+		}
 		ended = 1;
 	}
 }
