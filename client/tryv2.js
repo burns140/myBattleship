@@ -15,26 +15,38 @@ try{
   console.log(e.message);
 };
 
+var useremail;
+
+firebase.auth().onAuthStateChanged( user => {
+  if (user) { 
+		this.useremail = user.email;
+		try{
+			doOnce();
+		}catch(e){
+			console.log(e.message);
+		}
+	}
+});
+
 function doOnce(){
 	var userRef = firebase.database().ref().child('users');
-	
+	console.log(useremail);
+	//console.log(firebase.auth().currentUser.email);
 	userRef.once("value", function(snapshot) {
 	snapshot.forEach(function(childSnapshot){
-	    var value = childSnapshot.val();
+	  var value = childSnapshot.val();
 	
+		if(useremail  == value.email){
+			var newRef = userRef.child(childSnapshot.key);
+			var played1 = value.played;
+			played1++;
+			newRef.update({played: played1});
 		
-		var newRef = userRef.child(childSnapshot.key);
-		var played1 = value.played;
-		played1++;
-		newRef.update({played: played1});
-	
+		}
+		
+		
 });
 });
-}
-try{
-	doOnce();
-}catch(e){
-	console.log(e.message);
 }
 
 // set grid rows and columns and the size of each square
@@ -272,7 +284,8 @@ function shotShip(str1, num) {
 			userRef.once("value", function(snapshot) {
 				snapshot.forEach(function(childSnapshot){
 				  var value = childSnapshot.val();
-				  if(value.email == firebase.auth().currentUser.email){
+				  if(value.email == useremail){
+					  console.log('wins success')
 					  var newRef = userRef.child(childSnapshot.key);
 					  var wins1 = value.wins;
 					  wins1++;
@@ -280,6 +293,7 @@ function shotShip(str1, num) {
 				  }
 				});
 			});
+
 			window.alert('You won!');
 			document.getElementById("p1").innerHTML = "Game Ended";
 		}
