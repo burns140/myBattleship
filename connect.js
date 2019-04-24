@@ -26,7 +26,7 @@ io.on('connection', function(socket) {
 	});
 	socket.on('ended', function(msg) {
 		playernum = 0;
-	})
+	});
 });
 
 http.listen(3000, function() {

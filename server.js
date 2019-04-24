@@ -3,7 +3,8 @@ var PORT = process.env.PORT || 3000;
 
 var firebase = require('firebase');
 var express = require('express');
-var app = express();
+var app = require('express')();
+
 var http = require('http').createServer(app);
 var path = require('path');
 const bodyParser = require("body-parser");
@@ -13,7 +14,7 @@ var playernum = 0;
 io.on('connection', function(socket) {
 	io.emit('setusernum', playernum);
 	console.log(playernum);
-	console.log('user connected');
+	console.log("user connected");
 	socket.on('disconnect', function() {
 		console.log('user disconnected');
 	});
@@ -67,7 +68,7 @@ app.get('/play', function(req, res){
 		res.end('<h1>Room is full</h1>');
 		return;
 	}
-  res.sendFile(path.join(__dirname,'testgrid.html'));
+  res.sendFile(__dirname,'testgrid.html');
   console.log('testgrid page sent')
 });
 
