@@ -83,22 +83,6 @@ for (i = 0; i < cols; i++) {
 	}
 }
 
-/* lazy way of tracking when the game is won: just increment hitCount on every hit
-   in this version, and according to the official Hasbro rules (http://www.hasbro.com/common/instruct/BattleShip_(2002).PDF)
-   there are 17 hits to be made in order to win the game:
-      Carrier     - 5 hits
-      Battleship  - 4 hits
-      Destroyer   - 3 hits
-      Submarine   - 3 hits
-      Patrol Boat - 2 hits
-*/
-var hitCount = 0;
-
-/* create the 2d array that will contain the status of each square on the board
-   and place ships on the board (later, create function for random placement!)
-
-   0 = empty, 1 = part of a ship, 2 = a sunken part of a ship, 3 = a missed shot
-*/
 
 
 $(function() {
@@ -132,9 +116,9 @@ $(function() {
 		//console.log('e.target on received: ' + msg.id);
 		if (ended == 0) {
 			if ((blocksPlacedMe != maxBlocks || blocksPlacedThem != maxBlocks) && (placed == 0)) {
-				//console.log('blocksPlacedThem: ' + blocksPlacedThem);
-				//console.log('blocksPlacedMe: ' + blocksPlacedMe);
 				placeShips(msg, 1);
+				console.log('blocksPlacedThem: ' + blocksPlacedThem);
+				console.log('blocksPlacedMe: ' + blocksPlacedMe);
 			} else {
 				console.log('setting placed');
 				if (placed == 0) {
@@ -155,6 +139,11 @@ $(function() {
 		}
 	});
 	socket.on('placed', function(msg) {
+		if (myTurn == 1) {
+			document.getElementById("p1").innerHTML = "Your turn. Fire at enemies by clicking on bottom grid."
+		} else {
+			document.getElementById("p1").innerHTML = "Their turn";
+		}
 		placed = 1;
 	});
 	socket.on('ended', function(msg) {
@@ -171,6 +160,7 @@ function shotShip(str1, num) {
 	if (usernum != me) {
 		myTurn = 1;
 		console.log('my turn now');
+		document.getElementById("p1").innerHTML = "Your turn. Fire at enemies by clicking on bottom grid.";
 	}
 	if (usernum == me && num !== 0) {
 		return;
@@ -192,6 +182,7 @@ function shotShip(str1, num) {
 			//return;
 		}
 		myTurn = 0;
+		document.getElementById("p1").innerHTML = "Their turn";
 	} else if (num == 1) {
 		console.log('received request from other person');
 		var str2 = '';
@@ -219,14 +210,17 @@ function shotShip(str1, num) {
 		}
 		//console.log('myturn before switch: ' + myTurn);
 		myTurn = 1;
+		document.getElementById("p1").innerHTML = "Your turn. Fire at enemies by clicking on bottom grid.";
 		//console.log('myturn after switch: ' + myTurn);
 	}
 	if (blocksPlacedMe == 0 || blocksPlacedThem == 0) {
 		if (blocksPlacedMe == 0) {
 			window.alert('Other player won');
+			document.getElementById("p1").innerHTML = "Game Ended";
 			socket.emit('ended', 'ended');
 		} else {
 			window.alert('You won!');
+			document.getElementById("p1").innerHTML = "Game Ended";
 		}
 		ended = 1;
 	}
