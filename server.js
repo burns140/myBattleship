@@ -17,6 +17,7 @@ io.on('connection', function(socket) {
 	console.log(playernum);
 	console.log("user connected");
 	socket.on('disconnect', function() {
+		playernum = 0;
 		console.log('user disconnected');
 	});
 	socket.on('clicked', function(msg) {

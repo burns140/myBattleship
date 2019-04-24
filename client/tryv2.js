@@ -138,15 +138,16 @@ for (i = 0; i < cols; i++) {
 
 $(function() {
 	gameBoardContainer.addEventListener('click', function(e) {
-		if (blocksPlacedMe < maxBlocks && placed == 0) {
-			e.preventDefault();
-			placeShips(e.target.id, 0);
-			socket.emit('clicked', e.target.id + usernum);
-			return false;
-		} else {
-			return false;
-		}
-		
+		if (playercount > 1) {
+			if (blocksPlacedMe < maxBlocks && placed == 0) {
+				e.preventDefault();
+				placeShips(e.target.id, 0);
+				socket.emit('clicked', e.target.id + usernum);
+				return false;
+			} else {
+				return false;
+			}
+		}	
 	});
 	gameBoardContainer2.addEventListener('click', function(e) {
 		console.log('placed: ' + placed);
