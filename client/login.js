@@ -35,8 +35,9 @@ function login(){
     window.alert("email and password can't be empty");
   }
   else{
-    prevFunc = "login";
-    firebase.auth().signInWithEmailAndPassword(userEmail, userPass).catch(function(error) {
+    firebase.auth().signInWithEmailAndPassword(userEmail, userPass)
+    .then(prevFunc = "login")
+    .catch(function(error) {
       // Handle Errors here.
       var errorCode = error.code;
       var errorMessage = error.message;
