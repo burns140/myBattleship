@@ -28,7 +28,10 @@ io.on('connection', function(socket) {
 	});
 	socket.on('placed', function(msg) {
 		io.emit('placed', msg);
-	})
+	});
+	socket.on('ended', function(msg){
+		io.emit('ended', msg);
+	});
 });
 
 // Allow static files from client directory to run
