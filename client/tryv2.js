@@ -177,12 +177,12 @@ $(function() {
 			if (usernum % 2 == 1) {
 				myTurn = 1;
 			}
-			if (usernum == 1 && playercount == 1) {
-				document.getElementById("p1").innerHTML = "Waiting for other players.";
-			} else {
-				console.log('players placing ships');
-				document.getElementById("p1").innerHTML = "Players placing ships. Place ten ships by clicking on top grid.";
-			}
+		}
+		if (usernum == 1 && playercount == 1) {
+			document.getElementById("p1").innerHTML = "Waiting for other players.";
+		} else {
+			console.log('players placing ships');
+			document.getElementById("p1").innerHTML = "Players placing ships. Place ten ships by clicking on top grid.";
 		}
 	});
 	socket.on('placed', function(msg) {
@@ -262,7 +262,7 @@ function shotShip(str1, num) {
 	}
 	if (blocksPlacedMe == 0 || blocksPlacedThem == 0) {
 		if (blocksPlacedMe == 0) {
-			window.alert('Other player won');
+			//window.alert('Other player won');
 			document.getElementById("p1").innerHTML = "Game Ended";
 			socket.emit('ended', 'ended');
 		} else {
