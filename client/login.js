@@ -15,9 +15,6 @@ try{
   console.log(e.message);
 };
 
-
-var prevFunc = "temp";
-
 firebase.auth().onAuthStateChanged(function(user){
     if(user){
       // User is logged in

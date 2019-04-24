@@ -1,3 +1,30 @@
+// Initialize Firebase
+var config = {
+	apiKey: "AIzaSyB38Y5PiCyAoA1jTttFJbN0HliwjkstPvo",
+	authDomain: "battleship-92ba9.firebaseapp.com",
+	databaseURL: "https://battleship-92ba9.firebaseio.com",
+	projectId: "battleship-92ba9",
+	storageBucket: "battleship-92ba9.appspot.com",
+	messagingSenderId: "67219704226"
+};
+try{
+    if(!firebase.apps.length){
+	  firebase.initializeApp(config);
+	}
+  }catch(e){
+	console.log(e.message);
+};
+var currentUser1 = firebase.auth().currentUser.email;
+firebase.auth().onAuthStateChanged(function(user) {
+	if (user) {
+    currentUser1 = firebase.auth().currentUser.email;
+	} else {
+		// No user is signed in.
+	}
+});
+
+doOnce();
+
 // set grid rows and columns and the size of each square
 var rows = 10;
 var cols = 10;
@@ -219,6 +246,20 @@ function shotShip(str1, num) {
 			document.getElementById("p1").innerHTML = "Game Ended";
 			socket.emit('ended', 'ended');
 		} else {
+			
+			var userRef = firebase.database().ref().child('users');
+
+			userRef.on("value", function(snapshot) {
+				snapshot.forEach(function(childSnapshot){
+				  var value = childSnapshot.val();
+				  if(value.email == thisemail){
+					  var newRef = userRef.child(childSnapshot.key);
+					  var wins1 = value.wins;
+					  wins1++;
+					  newRef.update({wins: wins1});
+				  }
+				});
+			});
 			window.alert('You won!');
 			document.getElementById("p1").innerHTML = "Game Ended";
 		}
@@ -268,4 +309,23 @@ function placeShips(str1, num) {
 
 	return;
 
+}
+
+function doOnce(){
+	var userRef = firebase.database().ref().child('users');
+	var thisemail = currentUser1;
+	
+	userRef.on("value", function(snapshot) {
+	snapshot.forEach(function(childSnapshot){
+	var value = childSnapshot.val();
+	console.log('doonce success: '+thisemail);
+	if(value.email == thisemail){
+		
+		var newRef = userRef.child(childSnapshot.key);
+		var played1 = value.played;
+		played1++;
+		newRef.update({played: played1});
+	}
+});
+});
 }
