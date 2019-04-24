@@ -169,11 +169,19 @@ $(function() {
 		}
 	});
 	socket.on('setusernum', function(msg) {
+		playercount = msg;
+		console.log('playercount in set: ' + playercount);
 		if (usernum === -1) {
 			usernum = msg;
 			console.log('setting usernum: ' + usernum);
 			if (usernum % 2 == 1) {
 				myTurn = 1;
+			}
+			if (usernum == 1 && playercount == 1) {
+				document.getElementById("p1").innerHTML = "Waiting for other players.";
+			} else {
+				console.log('players placing ships');
+				document.getElementById("p1").innerHTML = "Players placing ships. Place ten ships by clicking on top grid.";
 			}
 		}
 	});
