@@ -7,20 +7,19 @@ var config = {
   storageBucket: "battleship-92ba9.appspot.com",
   messagingSenderId: "67219704226"
 };
-firebase.initializeApp(config);
+try{
+  if(!firebase.apps.length){
+    firebase.initializeApp(config);
+  }
+}catch(e){
+  console.log(e.message);
+};
+
 
 var prevFunc = "temp";
 
 firebase.auth().onAuthStateChanged(function(user){
     if(user){
-      if(prevFunc == "signup"){
-        try{
-          createNewUser();
-          prevFunc == "login"
-        }catch(e){
-          window.alert(e.message);
-        }
-      }
       // User is logged in
       window.location.href = "menu";
     }
@@ -56,7 +55,7 @@ function signup(){
   }
   else{
     firebase.auth().createUserWithEmailAndPassword(userEmail, userPass)
-    .then(prevFunc = "signup")
+    .then(createNewUser(userEmail))
     .catch(function(error) {
       // Handle Errors here.
       var errorCode = error.code;
@@ -66,23 +65,15 @@ function signup(){
   }
 }
 
-function createNewUser(){
+function createNewUser(email){
 
   var rootRef = firebase.database().ref().child('users');
-  var userRef = rootRef.child(firebase.auth().currentUser.uid);
 
-  userRef.set({
-    uid: firebase.auth().currentUser.uid,
-    email: firebase.auth().currentUser.email,
+  rootRef.push({
+    email: email,
     wins: 0,
     played: 0
-  }, function(error) {
-    if (error) {
-      // The write failed...
-    } else {
-      // Data saved successfully!
-    }
-  });
+  }).then(console.log("success")).catch();
 }
 
 function logout(){
