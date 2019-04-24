@@ -1,29 +1,41 @@
 // Initialize Firebase
 var config = {
-	apiKey: "AIzaSyB38Y5PiCyAoA1jTttFJbN0HliwjkstPvo",
-	authDomain: "battleship-92ba9.firebaseapp.com",
-	databaseURL: "https://battleship-92ba9.firebaseio.com",
-	projectId: "battleship-92ba9",
-	storageBucket: "battleship-92ba9.appspot.com",
-	messagingSenderId: "67219704226"
+  apiKey: "AIzaSyB38Y5PiCyAoA1jTttFJbN0HliwjkstPvo",
+  authDomain: "battleship-92ba9.firebaseapp.com",
+  databaseURL: "https://battleship-92ba9.firebaseio.com",
+  projectId: "battleship-92ba9",
+  storageBucket: "battleship-92ba9.appspot.com",
+  messagingSenderId: "67219704226"
 };
 try{
-    if(!firebase.apps.length){
-	  firebase.initializeApp(config);
-	}
-  }catch(e){
-	console.log(e.message);
+  if(!firebase.apps.length){
+    firebase.initializeApp(config);
+  }
+}catch(e){
+  console.log(e.message);
 };
-var currentUser1 = firebase.auth().currentUser.email;
-firebase.auth().onAuthStateChanged(function(user) {
-	if (user) {
-    currentUser1 = firebase.auth().currentUser.email;
-	} else {
-		// No user is signed in.
-	}
-});
 
-doOnce();
+function doOnce(){
+	var userRef = firebase.database().ref().child('users');
+	
+	userRef.once("value", function(snapshot) {
+	snapshot.forEach(function(childSnapshot){
+	    var value = childSnapshot.val();
+	
+		
+		var newRef = userRef.child(childSnapshot.key);
+		var played1 = value.played;
+		played1++;
+		newRef.update({played: played1});
+	
+});
+});
+}
+try{
+	doOnce();
+}catch(e){
+	console.log(e.message);
+}
 
 // set grid rows and columns and the size of each square
 var rows = 10;
@@ -249,10 +261,10 @@ function shotShip(str1, num) {
 			
 			var userRef = firebase.database().ref().child('users');
 
-			userRef.on("value", function(snapshot) {
+			userRef.once("value", function(snapshot) {
 				snapshot.forEach(function(childSnapshot){
 				  var value = childSnapshot.val();
-				  if(value.email == thisemail){
+				  if(value.email == firebase.auth().currentUser.email){
 					  var newRef = userRef.child(childSnapshot.key);
 					  var wins1 = value.wins;
 					  wins1++;
@@ -311,21 +323,4 @@ function placeShips(str1, num) {
 
 }
 
-function doOnce(){
-	var userRef = firebase.database().ref().child('users');
-	var thisemail = currentUser1;
-	
-	userRef.on("value", function(snapshot) {
-	snapshot.forEach(function(childSnapshot){
-	var value = childSnapshot.val();
-	console.log('doonce success: '+thisemail);
-	if(value.email == thisemail){
-		
-		var newRef = userRef.child(childSnapshot.key);
-		var played1 = value.played;
-		played1++;
-		newRef.update({played: played1});
-	}
-});
-});
-}
+
