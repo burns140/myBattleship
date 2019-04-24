@@ -24,8 +24,9 @@ p, button, input {
 
 #gameboard {
 	position:relative;
-	float: left;
+	/* float: left; */ 
 	margin:0 auto 2em auto;
+	/* margin-left: 50px; */
 	width:500px;
 	height:500px;
 }
@@ -33,6 +34,7 @@ p, button, input {
 #gameboard2{
 	position:relative;
 	margin:0 auto 2em auto;
+	/* margin-left: 200px; */
 	width:500px;
 	height:500px;
 }

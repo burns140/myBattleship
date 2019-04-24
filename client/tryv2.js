@@ -149,7 +149,7 @@ $(function() {
 		if (usernum === -1) {
 			usernum = msg;
 			console.log('setting usernum: ' + usernum);
-			if (usernum == 1) {
+			if (usernum % 2 == 1) {
 				myTurn = 1;
 			}
 		}
